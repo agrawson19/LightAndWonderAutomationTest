@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="methods" preserve-order="true" thread-count="1">
+<!--    <listeners>-->
+<!--        <listener class-name="com.tieto.pcms.listeners.BaseTestListener"/>-->
+<!--        <listener class-name="com.tieto.pcms.listeners.AnnotationTransformer"/>-->
+<!--    </listeners>-->
+    <test name="Chrome-Test">
+        <groups>
+            <run>
+                <include name="SMOKE"/>
+                <exclude name="SETTINGS"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="ui.testcases.*"/>
+        </packages>
+    </test>
+</suite>
