@@ -1,6 +1,5 @@
 package Ui.driver;
 
-//import Ui.exceptions.TestSetupException;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,21 +8,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class BrowserDriver {
 
     public BrowserDriver(String browserName){
-        this.driver =createDriver(browserName);
-    }
+  }
     private static final Logger logger = LogManager.getLogger(BrowserDriver.class);
-    private final WebDriver driver;
     public WebDriver createDriver(String browserName) {
         logger.debug("Browser for Execution - {}", browserName);
         WebDriver driver;
@@ -41,9 +33,6 @@ public class BrowserDriver {
             chromePrefs.put("safebrowsing.enabled", "true");
             chromePrefs.put("credentials_enable_service", false);
             chromePrefs.put("profile.default_content_settings.popups", 0);
-//            chromePrefs.put("download.prompt_for_download", false);
-//            chromePrefs.put(DEFAULT_DOWNLOAD_DIRECTORY, downloadFilesPath);
-
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.addArguments("disable-infobars");
             chromeOptions.setAcceptInsecureCerts(true);
@@ -55,13 +44,7 @@ public class BrowserDriver {
 
         }
         catch (Exception e) {
-            logger.fatal(String.format("Exception occurred in createChromeBrowserDriver() - %s", e), e);
-            try {
-               // throw new TestSetupException(e);
-            } catch (Exception ex) {
-              //  throw new RuntimeException(ex);
-            }
-
+            logger.info(String.format("Exception occurred in createChromeBrowserDriver() - %s", e), e);
         }
         return webDriver;
     }

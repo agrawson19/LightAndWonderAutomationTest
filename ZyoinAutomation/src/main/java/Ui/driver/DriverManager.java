@@ -6,12 +6,12 @@ import java.util.HashMap;
 
 public class DriverManager {
 
-    public  static  final HashMap<Long, WebDriver> map = new HashMap<>();
+    public  static  final HashMap<String, WebDriver> map = new HashMap<>();
     public static void setDriver(WebDriver driver){
-        map.put(Thread.currentThread().getId(),driver);
+        map.put("drivrID",driver);
     }
 
     public static WebDriver getDriver(){
-        return map.get(Thread.currentThread().getId());
+        return map.get("drivrID");
     }
 }
