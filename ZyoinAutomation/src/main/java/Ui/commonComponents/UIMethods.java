@@ -78,7 +78,7 @@ public class UIMethods {
     }
 
     public  boolean isElementDisplayed(By findBy,String desc){
-        boolean flag = false;
+        boolean flag =false;
         waitForElementToBeVisible(findBy,desc);
        flag= this.findElement(findBy).isDisplayed();
        return flag;
