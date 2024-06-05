@@ -15,9 +15,11 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeTest;
 
 @CucumberOptions(tags = "@smoke",
-
-        features = {"src/main/resources/features"}
-,glue = {"Ui.testcases"},plugin = {"html:target/report/cucumber-html","json:target/cucumber.json"})
+        features = "src/main/resources/features",
+        glue= {"Ui.testcases"},
+        plugin = { "pretty", "html:target/cucumber-reports/index.html" },
+        monochrome = true
+)
 public class TestRunner extends  AbstractTestNGCucumberTests{
 
 

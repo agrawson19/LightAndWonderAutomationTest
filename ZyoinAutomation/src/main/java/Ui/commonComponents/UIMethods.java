@@ -4,16 +4,19 @@ import Ui.driver.DriverManager;
 import Ui.exceptions.WebElementException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.testng.Reporter;
 import org.testng.asserts.*;
+import org.testng.Reporter.*;
 
+import java.lang.reflect.Array;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class UIMethods {
@@ -26,19 +29,31 @@ public class UIMethods {
         }
     }
     public void setText(By findBy, String text, String desc) {
-        logger.debug("{}:: {}", desc, text);
+        logger.info("{}:: {}", desc, text);
         waitForElementToBeVisible(findBy, desc);
         findElement(findBy).clear();
         findElement(findBy).sendKeys(text);
+    }
+    public void setTextAndEnter(By findBy, String text, String desc) {
+        logger.info("{}:: {}", desc, text);
+        waitForElementToBeVisible(findBy, desc);
+        findElement(findBy).clear();
+        findElement(findBy).sendKeys(text);
+        delay(2000);
+        findElement(findBy).sendKeys(Keys.ENTER);
     }
     public WebElement findElement(By byLocator) {
         return this.driver.findElement(byLocator);
     }
 
+    public List<WebElement> findElements(By byLocator) {
+        return this.driver.findElements(byLocator);
+    }
+
     public boolean waitForElementToBeVisible(By findBy, String desc) {
         long waitSeconds=10;
         boolean flag = false;
-        logger.debug("waitForElementToBeVisible - '{}'", desc);
+        logger.info("waitForElementToBeVisible - '{}'", desc);
         try {
             Wait<WebDriver> wait = new FluentWait<>(this.driver)
                     .withTimeout(Duration.ofSeconds(waitSeconds))
@@ -57,7 +72,7 @@ public class UIMethods {
     public void waitForPageLoadedSucessfully() {
         long waitMilliSeconds=10;
 
-        logger.debug("waitForLoginPageLoadedSucessfully");
+        logger.info("waitForLoginPageLoadedSucessfully");
         try {
             this.driver.manage().timeouts().pageLoadTimeout(waitMilliSeconds, TimeUnit.SECONDS);
         } catch (Exception e) {
@@ -77,6 +92,28 @@ public class UIMethods {
         }
     }
 
+    public void click(WebElement eleToClick,String desc){
+        try {
+            eleToClick.click();
+            logger.info(desc);
+        }
+        catch (Exception e) {
+            throw new WebElementException(e);
+        }
+    }
+    public void switchToWindowAndCloseCurrentWindow(){
+        ArrayList<String>windows = new ArrayList<>(this.driver.getWindowHandles());
+        if(windows.size()==1){
+            logger.info("there is no new window open");
+            throw new WebDriverException("No, new window or tab opened.");
+        }
+        else {
+            this.driver.close();
+            this.driver.switchTo().window((String) windows.get(1));
+            logger.info("Successfully switched to newly opened Tab or Window - " + this.driver.getTitle());
+        }
+    }
+
     public  boolean isElementDisplayed(By findBy,String desc){
         boolean flag =false;
         waitForElementToBeVisible(findBy,desc);
@@ -87,7 +124,7 @@ public class UIMethods {
     public String getText(By findBy, String desc) {
         waitForElementToBeVisible(findBy,desc);
         String text;
-        logger.debug(desc);
+        logger.info(desc);
         try {
             text = findElement(findBy).getText().trim();
         } catch (Exception e) {
@@ -98,7 +135,7 @@ public class UIMethods {
     }
 
     public void getUrl(String url){
-        logger.debug("access url: " + url);
+        logger.info("access url: " + url);
         boolean sucessful =false;
         int count =0;
             while (!sucessful){
@@ -125,6 +162,14 @@ public class UIMethods {
                 throw new WebDriverException("failed to get url: "+url);
             }
 
+    }
+
+    public static void delay(int numberInMilliSeconds){
+        try {
+            Thread.sleep(numberInMilliSeconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
