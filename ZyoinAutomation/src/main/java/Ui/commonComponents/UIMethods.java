@@ -8,15 +8,10 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-import org.testng.Reporter;
-import org.testng.asserts.*;
-import org.testng.Reporter.*;
-
-import java.lang.reflect.Array;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class UIMethods {
@@ -35,13 +30,20 @@ public class UIMethods {
         findElement(findBy).sendKeys(text);
     }
     public void setTextAndEnter(By findBy, String text, String desc) {
-        logger.info("{}:: {}", desc, text);
-        waitForElementToBeVisible(findBy, desc);
-        findElement(findBy).clear();
-        findElement(findBy).sendKeys(text);
-        delay(2000);
-        findElement(findBy).sendKeys(Keys.ENTER);
+        try {
+            logger.info("{}:: {}", desc, text);
+            waitForElementToBeVisible(findBy, desc);
+            findElement(findBy).clear();
+            findElement(findBy).sendKeys(text);
+            delay(2000);
+            findElement(findBy).sendKeys(Keys.ENTER);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
+
     public WebElement findElement(By byLocator) {
         return this.driver.findElement(byLocator);
     }
@@ -50,7 +52,7 @@ public class UIMethods {
         return this.driver.findElements(byLocator);
     }
 
-    public boolean waitForElementToBeVisible(By findBy, String desc) {
+    public boolean waitForElementToBeVisible(By findBy, String... desc) {
         long waitSeconds=10;
         boolean flag = false;
         logger.info("waitForElementToBeVisible - '{}'", desc);
@@ -63,11 +65,28 @@ public class UIMethods {
             wait.until(ExpectedConditions.visibilityOf(this.findElement(findBy)));
             flag = true;
         } catch (Exception e) {
+            logger.info("Exception occurred in waitForElementToBeVisible. Exception: "+e.getMessage());
+        }
+        return flag;
+    }
+
+    public boolean waitForVisibilityOfElement(WebElement findBy, String... desc) {
+        long waitSeconds=10;
+        boolean flag = false;
+        logger.info("waitForElementToBeVisible - '{}'", desc);
+        try {
+         WebDriverWait wait= new WebDriverWait(this.driver,Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.visibilityOf((findBy)));
+            wait.until(ExpectedConditions.elementToBeClickable((findBy)));
+            flag = true;
+        } catch (Exception e) {
             throw new WebElementException(String.format("Exception occurred in waitForElementToBeVisible. Exception: [%s]", e), e);
 
         }
         return flag;
     }
+
+
 
     public void waitForPageLoadedSucessfully() {
         long waitMilliSeconds=10;
@@ -81,8 +100,7 @@ public class UIMethods {
         }
 
     }
-
-    public void click(By findBy,String desc){
+    public void click(By findBy,String... desc){
         try {
             waitForElementToBeVisible(findBy, desc);
             findElement(findBy).click();
@@ -92,7 +110,16 @@ public class UIMethods {
         }
     }
 
-    public void click(WebElement eleToClick,String desc){
+    public void scrollIntoView(WebElement element){
+        try {
+            JavascriptExecutor js =  (JavascriptExecutor)(this.driver);
+            js.executeScript("arguments[0].scrollIntoView(true);",element);
+        }
+        catch (Exception e) {
+            throw new WebElementException(e);
+        }
+    }
+    public void click(WebElement eleToClick,String... desc){
         try {
             eleToClick.click();
             logger.info(desc);
@@ -114,13 +141,14 @@ public class UIMethods {
         }
     }
 
-    public  boolean isElementDisplayed(By findBy,String desc){
+    public  boolean isElementDisplayed(By findBy,String... desc){
         boolean flag =false;
         waitForElementToBeVisible(findBy,desc);
        flag= this.findElement(findBy).isDisplayed();
        return flag;
 
     }
+
     public String getText(By findBy, String desc) {
         waitForElementToBeVisible(findBy,desc);
         String text;
@@ -171,10 +199,4 @@ public class UIMethods {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
-
-
 }

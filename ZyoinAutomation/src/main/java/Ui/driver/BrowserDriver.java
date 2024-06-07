@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BrowserDriver {
 
-    public BrowserDriver(String browserName){
+    public BrowserDriver(){
   }
     private static final Logger logger = LogManager.getLogger(BrowserDriver.class);
     public WebDriver createDriver(String browserName) {
@@ -32,9 +32,7 @@ public class BrowserDriver {
             HashMap<String, Object> chromePrefs = new HashMap<>();
             chromePrefs.put("safebrowsing.enabled", "true");
             chromePrefs.put("credentials_enable_service", false);
-            chromePrefs.put("profile.default_content_settings.popups", 0);
             ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.addArguments("disable-infobars");
             chromeOptions.setAcceptInsecureCerts(true);
             chromeOptions.setExperimentalOption("prefs", chromePrefs);
 
