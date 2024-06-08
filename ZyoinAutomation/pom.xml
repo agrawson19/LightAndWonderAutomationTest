@@ -49,9 +49,8 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
             <version>${cucumber.version}</version>
-
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.cucumber/gherkin -->
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>gherkin</artifactId>
@@ -63,18 +62,6 @@
             <version>${assertj.core.version}</version>
             <scope>compile</scope>
         </dependency>
-
-        <!--        <dependency>-->
-<!--            <groupId>info.cukes</groupId>-->
-<!--            <artifactId>gherkin</artifactId>-->
-<!--           <version>2.12.2</version>-->
-<!--             <type>jar</type>-->
-<!--            </dependency>-->
-
-
-
-
-
 
     </dependencies>
     <build>
