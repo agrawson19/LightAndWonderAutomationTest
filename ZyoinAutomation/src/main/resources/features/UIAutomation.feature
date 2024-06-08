@@ -5,7 +5,7 @@ Feature: ATT End to End testing
 
 
   @smoke
- Scenario Outline: Adding a Monitor Item in Cart and verifying sub total
+ Scenario Outline: Adding a Monitor and laptop Item in Cart and verifying sub total
     And Search field type "<fieldType>"
     And Select <itemNumber> item in the list
     When Add the item to cart
